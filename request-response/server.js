@@ -1,6 +1,8 @@
 var express = require('express'),
 	app = express();
 
+app.set('view engine', 'jade');
+
 // Request object
 app.get('/:breedOfDog', function(req, res){
 
@@ -49,7 +51,23 @@ app.get('/:breedOfDog', function(req, res){
 		res.send(200, html);
 	});
 
+});
 
+// Formatting Requests
+app.get('/', function(req, res){
+	res.format({
+		// TODO: why is this not working at the bottom
+		'application/json': function() {
+			res.json({ topic: 'Express' });
+		},
+		// Can get it via 'curl localhost:3000'
+		'text/plain': function() {
+			res.send('text response');
+		},
+		'text/html': function() {
+			res.render('index');
+		}
+	});
 });
 
 app.listen(3000);
